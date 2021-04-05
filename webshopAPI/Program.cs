@@ -389,15 +389,15 @@ namespace webshopAPI
             /**************************************************************
                              GetAvailibleBooks()
              **************************************************************/
-            PrintOut.Red("GetAvailibleBooks()");
-            books = api.GetAvailibleBooks(categories[userChoice - 1].Id);
+            //PrintOut.Red("GetAvailibleBooks()");
+            //books = api.GetAvailibleBooks(categories[userChoice - 1].Id);
 
-            for (int i = 0; i < books.Count; i++)
-            {
-                Console.WriteLine($"\t{i + 1}. {books[i].Title}");
-            }
+            //for (int i = 0; i < books.Count; i++)
+            //{
+            //    Console.WriteLine($"\t{i + 1}. {books[i].Title}");
+            //}
 
-            userChoice = LoopThruTheMenu(books);
+            //userChoice = LoopThruTheMenu(books);
             /**************************************************************
                              Get book from keyword()
              **************************************************************/

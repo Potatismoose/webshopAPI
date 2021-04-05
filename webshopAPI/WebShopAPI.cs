@@ -446,12 +446,11 @@ namespace webshopAPI
         /// </summary>
         /// <param name="categoryId">Supply the category Id to fetch books from</param>
         /// <returns>Returns a collection of Books (list)</returns>
-        public List<Book> GetAvailibleBooks(int categoryId)
+        public List<Book> GetAvailibleBooks()
         {
             return (from book in db.Books
                     where book.Amount > 0
-                    && book.Category.Id == categoryId
-                    select book).ToList();
+                    select book).Include(book => book.Category).ToList();
         }
 
         /// <summary>

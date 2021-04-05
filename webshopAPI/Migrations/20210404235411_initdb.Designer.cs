@@ -10,7 +10,7 @@ using webshopAPI.Db;
 namespace webshopAPI.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20210323163741_initdb")]
+    [Migration("20210404235411_initdb")]
     partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace webshopAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("webshopAPI.Book", b =>

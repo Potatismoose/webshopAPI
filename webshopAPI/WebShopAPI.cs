@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using webshopAPI.Db;
@@ -472,9 +473,17 @@ namespace webshopAPI
         /// <returns>Returns a collection of Books matching the search.</returns>
         public List<Book> GetBooks(string keyword)
         {
+            //return (from book in db.Books
+            //        join bookCategory in db.BookCategories
+            //        on book.Category.Id equals bookCategory.Id
+            //        where book.Title.Contains(keyword)
+            //        select book).ToList();
+
+            //Varför fungerar inte koden ovan?
+
             return (from book in db.Books
                     where book.Title.Contains(keyword)
-                    select book).ToList();
+                    select book).Include(book => book.Category).ToList();
         }
 
         /// <summary>
@@ -747,12 +756,19 @@ namespace webshopAPI
                                       select book).FirstOrDefault();
 
                 if (updateThisBook != null &&
-                    updateThisBook.Amount + amountToSet >= 0)
+                    updateThisBook.Amount + amountToSet > 0)
                 {
                     updateThisBook.Amount += amountToSet;
                     db.Books.Update(updateThisBook);
                     db.SaveChanges();
                     return true;
+                }
+                else if (updateThisBook != null &&
+                    updateThisBook.Amount + amountToSet <= 0)
+                {
+                    amountToSet = amountToSet - amountToSet * 2; //Convert minusnumber to plus equivalent
+                    var successOrFail = DeleteBook(adminId, bookId, amountToSet);
+                    return successOrFail;
                 }
             }
             return false;
@@ -811,6 +827,7 @@ namespace webshopAPI
                 var alreadyExistingBook = (from book in db.Books
                                            where book.Title == title
                                            && book.Author == author
+                                           && book.Price == price
                                            select book).FirstOrDefault();
                 if (alreadyExistingBook == null)
                 {

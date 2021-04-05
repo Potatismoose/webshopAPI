@@ -35,5 +35,14 @@ namespace webshopAPI
         /// Title field of the Books
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Get the title of the book
+        /// </summary>
+        /// <returns>Title of the book</returns>
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

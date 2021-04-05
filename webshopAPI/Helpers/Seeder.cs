@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using webshopAPI.Models;
+using webshopAPI.Db;
 
-namespace webshopAPI.Db
+namespace webshopAPI.Helpers
 {
     public static class Seeder
     {

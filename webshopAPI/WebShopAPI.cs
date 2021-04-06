@@ -299,7 +299,7 @@ namespace webshopAPI
                         theBook.Amount--;
                         db.Books.Update(theBook);
                         db.SaveChanges();
-
+                        
                         return true;
                     }
                     catch
@@ -379,6 +379,15 @@ namespace webshopAPI
                 var deleteThisCategory = (from category in db.BookCategories
                                           where category.Id == categoryId
                                           select category).FirstOrDefault();
+                
+                var booksInCategory = (from book in db.Books
+                                       where book.Category.Id == categoryId
+                                       select book).FirstOrDefault();
+
+                if (booksInCategory != null)
+                {
+                    return false;
+                }
 
                 try
                 {
@@ -481,7 +490,8 @@ namespace webshopAPI
             //Varför fungerar inte koden ovan?
 
             return (from book in db.Books
-                    where book.Title.Contains(keyword)
+                    where book.Title.Contains(keyword) 
+                    && book.Amount > 0
                     select book).Include(book => book.Category).ToList();
         }
 
@@ -494,7 +504,7 @@ namespace webshopAPI
         {
             return (from book in db.Books
                     where book.Author.Contains(keyword)
-                    select book).ToList();
+                    select book).Include(book => book.Category).ToList();
         }
 
         /// <summary>
@@ -508,6 +518,7 @@ namespace webshopAPI
 
             listOfBooks = (from book in db.Books
                            where book.Category.Id == categoryId
+                           && book.Amount > 0
                            select book).ToList();
 
             return listOfBooks;
@@ -719,12 +730,18 @@ namespace webshopAPI
             {
                 try
                 {
-                    if (password == passwordVerify)
+                    if (password == passwordVerify
+                        && !string.IsNullOrEmpty(password)
+                        && !string.IsNullOrWhiteSpace(password))
                     {
                         User newUser = new User(name, password, isAdmin: false);
                         db.Users.Add(newUser);
                         db.SaveChanges();
                         return true;
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
                 catch
